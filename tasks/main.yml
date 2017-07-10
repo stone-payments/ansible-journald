@@ -1,7 +1,15 @@
 ---
 - name: configure journald
   template:
-    src: journald.j2
+    src: journald.conf.j2
     dest: /etc/systemd/journald.conf
   notify:
     - restart journald
+
+- meta: flush_handlers
+
+- name: ensure journald is started and enabled
+  service:
+    name: "systemd-journald"
+    state: started
+    enabled: yes
